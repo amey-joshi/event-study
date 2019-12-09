@@ -124,23 +124,26 @@ compute_bhar <- function(stock, index, event.time) {
 #' @examples
 compute_car <- function(stock, index, event.time) {
   WINDOW_SIZE <- 10
-  start.time <- event.time - 10
-  end.time <- event.time + 10
+  start.time <- event.time - WINDOW_SIZE
+  end.time <- event.time + WINDOW_SIZE
   
-  model.1 <- lm(stock[, 4] ~ index[, 4], na.action = na.omit)
+  stock.ret <- dailyReturn(stock[, 4])
+  index.ret <- dailyReturn(index[, 4])
+  
+  model.1 <- lm(stock.ret[1:start.time] ~ index.ret[1:start.time], na.action = na.omit)
   alpha <- model.1$coefficients[1]
   beta  <- model.1$coefficients[2]
   sigma <- sd(model.1$residuals)
   
-  est.stock <- alpha + beta * index[event.time:end.time, 4]
-  res.stock <- est.stock - stock[event.time:end.time, 4]
+  est.stock <- alpha + beta * index.ret[event.time:end.time]
+  res.stock <- est.stock - stock.ret[event.time:end.time]
   
   car <- sum(res.stock)
   
   res.stock.t <- res.stock/sigma
   car.t <- car/(sqrt(WINDOW_SIZE)*sigma)
   
-  df.t <- event.time - start.time - 3 # 2 parameters are estimated.
+  df.t <- event.time - 1 - 2 # 2 parameters are estimated.
   res.stock.sig <- abs(res.stock.t) >= qt(0.95, df.t)
   car.sig <- abs(car.t) >= qt(0.95, df.t)
   
@@ -275,7 +278,17 @@ stock <- data.list[[11]][[1]]
 index <- data.list[[11]][[2]]
 event.date <- "2019-02-06"
 event.time <- which(index(stock) == event.date)
-compare_plot(stock, index, "Siemens", "DAX", event.time)
+compare_plot(stock, index, "DHR", "S&P500", event.time)
+compute_bhar(stock, index, event.time)
+compute_car(stock, index, event.time)
+```
+
+```{r}
+stock <- data.list[[12]][[1]]
+index <- data.list[[12]][[2]]
+event.date <- "2019-02-06"
+event.time <- which(index(stock) == event.date)
+compare_plot(stock, index, "GE", "S&P500", event.time)
 compute_bhar(stock, index, event.time)
 compute_car(stock, index, event.time)
 ```
