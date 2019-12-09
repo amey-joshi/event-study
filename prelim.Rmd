@@ -77,6 +77,38 @@ get_closing_data <- function(stock.name, index.name, from, to) {
   index <- getSymbols(trimws(index.name), from = from, to = to, auto.assign = FALSE)
   list(stock, index)
 }
+
+#' Compute the Buy-and-Hold-Abnormal-Returns.
+#'
+#' @param stock 
+#' @param event.timet 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+compute_bhar <- function(stock, index, event.time) {
+  start.time <- event.time - 10
+  end.time <- event.time + 10
+  # Get cumulative returns for the stock
+  stock.before <-
+    diff(stock[start.time:event.time, c(4)], arithmetic = FALSE)
+  stock.after <-
+    diff(stock[event.time:end.time, c(4)], arithmetic = FALSE)
+  # Get cumulative returns for the index
+  index.before <-
+    diff(index[start.time:event.time, c(4)], arithmetic = FALSE)
+  index.after <-
+    diff(index[event.time:end.time, c(4)], arithmetic = FALSE)
+  # Compute BHAR
+  bhar.before <-
+    prod(stock.before, na.rm = TRUE) - prod(index.before, na.rm = TRUE)
+  bhar.after <-
+    prod(stock.after, na.rm = TRUE) - prod(index.after, na.rm = TRUE)
+  
+  cat(paste("BHAR before:", round(bhar.before, 4), "\n"))
+  cat(paste("BHAR after:", round(bhar.after, 4), "\n"))
+}
 ```
 
 Get the data.
@@ -97,6 +129,7 @@ index <- data.list[[1]][[2]]
 event.date <- "2015-09-18"
 event.time <- which(index(stock) == event.date)
 compare_plot(stock, index, "Volkswagen", "DAX", event.time)
+compute_bhar(stock, index, event.time)
 ```
 
 ```{r}
@@ -105,6 +138,7 @@ index <- data.list[[2]][[2]]
 event.date <- "2018-03-28"
 event.time <- which(index(stock) == event.date)
 compare_plot(stock, index, "ICICI", "SENSEX", event.time)
+compute_bhar(stock, index, event.time)
 ```
 
 ## Product quality report
@@ -115,6 +149,7 @@ index <- data.list[[3]][[2]]
 event.date <- "2018-12-19"
 event.time <- which(index(stock) == event.date)
 compare_plot(stock, index, "J&J", "S&P500", event.time)
+compute_bhar(stock, index, event.time)
 ```
 
 ```{r}
@@ -123,6 +158,7 @@ index <- data.list[[4]][[2]]
 event.date <- "2015-06-03"
 event.time <- which(index(stock) == event.date)
 compare_plot(stock, index, "Nestle", "Sensex", event.time)
+compute_bhar(stock, index, event.time)
 ```
 
 ## Accounting scandal
@@ -133,6 +169,7 @@ index <- data.list[[5]][[2]]
 event.date <- "2019-08-19" # Accounting scandal
 event.time <- which(index(stock) == event.date)
 compare_plot(stock, index, "GE", "S&P500", event.time)
+compute_bhar(stock, index, event.time)
 ```
 
 ```{r}
@@ -141,6 +178,7 @@ index <- data.list[[6]][[2]]
 event.date <- "2019-10-22" # Accounting scandal
 event.time <- which(index(stock) == event.date)
 compare_plot(stock, index, "Infosys", "SENSEX", event.time)
+compute_bhar(stock, index, event.time)
 ```
 
 ## CEO change
@@ -151,6 +189,7 @@ index <- data.list[[7]][[2]]
 event.date <- "2017-02-21" # CEO change
 event.time <- which(index(stock) == event.date)
 compare_plot(stock, index, "TCS", "SENSEX", event.time)
+compute_bhar(stock, index, event.time)
 ```
 ```{r}
 stock <- data.list[[8]][[1]]
@@ -158,15 +197,17 @@ index <- data.list[[8]][[2]]
 event.date <- "2015-08-10" # CEO change
 event.time <- which(index(stock) == event.date)
 compare_plot(stock, index, "Google", "IXIC", event.time)
+compute_bhar(stock, index, event.time)
 ```
 
 ## Product recall
 ```{r}
 stock <- data.list[[9]][[1]]
 index <- data.list[[9]][[2]]
-event.date <- "2016-05-27" # CEO change
+event.date <- "2016-05-27"
 event.time <- which(index(stock) == event.date)
 compare_plot(stock, index, "Maruti", "SENSEX", event.time)
+compute_bhar(stock, index, event.time)
 ```
 
 ```{r}
@@ -175,4 +216,15 @@ index <- data.list[[10]][[2]]
 event.date <- "2015-03-10" # CEO change
 event.time <- which(index(stock) == event.date)
 compare_plot(stock, index, "Ford", "S&P500", event.time)
+compute_bhar(stock, index, event.time)
+```
+
+## Acquisitions
+```{r}
+stock <- data.list[[11]][[1]]
+index <- data.list[[11]][[2]]
+event.date <- "2019-02-06"
+event.time <- which(index(stock) == event.date)
+compare_plot(stock, index, "Siemens", "DAX", event.time)
+compute_bhar(stock, index, event.time)
 ```
