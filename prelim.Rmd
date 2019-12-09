@@ -157,5 +157,22 @@ stock <- data.list[[8]][[1]]
 index <- data.list[[8]][[2]]
 event.date <- "2015-08-10" # CEO change
 event.time <- which(index(stock) == event.date)
-compare_plot(stock, index, "Google", "SENSEX", event.time)
+compare_plot(stock, index, "Google", "IXIC", event.time)
+```
+
+## Product recall
+```{r}
+stock <- data.list[[9]][[1]]
+index <- data.list[[9]][[2]]
+event.date <- "2016-05-27" # CEO change
+event.time <- which(index(stock) == event.date)
+compare_plot(stock, index, "Maruti", "SENSEX", event.time)
+```
+
+```{r}
+stock <- data.list[[10]][[1]]
+index <- data.list[[10]][[2]]
+event.date <- "2015-03-10" # CEO change
+event.time <- which(index(stock) == event.date)
+compare_plot(stock, index, "Ford", "S&P500", event.time)
 ```
