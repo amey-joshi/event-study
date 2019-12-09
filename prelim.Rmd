@@ -112,7 +112,7 @@ compute_bhar <- function(stock, index, event.time) {
   cat(paste("BHAR after:", round(bhar.after, 4), "\n"))
 }
 
-#' Compute abnormal returns statistics.
+#' Compute abnormal returns statistics. Report if there are significant changes.
 #'
 #' @param stock 
 #' @param index 
@@ -148,7 +148,7 @@ compute_car <- function(stock, index, event.time) {
   car.sig <- abs(car.t) >= qt(0.95, df.t)
   
   result <- ifelse(any(res.stock.sig), "YES", "NO")
-  cat(paste("Significant change in AR", result, "\n"))
+  cat(paste("\nSignificant change in AR", result, "\n"))
   result <- ifelse(any(res.stock.sig), "YES", "NO")
   cat(paste("Significant change in CAR", result))
 }
