@@ -89,7 +89,8 @@ data.list <-
   )
 ```
 
-## Whistleblower effect in Europe and India
+## Corporate governance scandal
+
 ```{r}
 stock <- data.list[[1]][[1]]
 index <- data.list[[1]][[2]]
@@ -106,10 +107,12 @@ event.time <- which(index(stock) == event.date)
 compare_plot(stock, index, "ICICI", "SENSEX", event.time)
 ```
 
+## Product quality report
+
 ```{r}
 stock <- data.list[[3]][[1]]
 index <- data.list[[3]][[2]]
-event.date <- "2018-06-22"
+event.date <- "2018-12-19"
 event.time <- which(index(stock) == event.date)
 compare_plot(stock, index, "J&J", "S&P500", event.time)
 ```
@@ -121,6 +124,8 @@ event.date <- "2015-06-03"
 event.time <- which(index(stock) == event.date)
 compare_plot(stock, index, "Nestle", "Sensex", event.time)
 ```
+
+## Accounting scandal
 
 ```{r}
 stock <- data.list[[5]][[1]]
@@ -137,6 +142,8 @@ event.date <- "2019-10-22" # Accounting scandal
 event.time <- which(index(stock) == event.date)
 compare_plot(stock, index, "Infosys", "SENSEX", event.time)
 ```
+
+## CEO change
 
 ```{r}
 stock <- data.list[[7]][[1]]
